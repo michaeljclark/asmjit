@@ -134,8 +134,10 @@ void* OSUtils::allocVirtualMemory(size_t size, size_t* allocated, uint32_t flags
   if (flags & kVMWritable  ) protection |= PROT_WRITE;
   if (flags & kVMExecutable) protection |= PROT_EXEC;
 
-  void* mbase = ::mmap(nullptr, alignedSize, protection, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+  static uintptr_t membase = 0xc0000000;
+  void* mbase = ::mmap((void*)membase, alignedSize, protection, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
   if (ASMJIT_UNLIKELY(mbase == MAP_FAILED)) return nullptr;
+  membase += alignedSize;
 
   if (allocated) *allocated = alignedSize;
   return mbase;
