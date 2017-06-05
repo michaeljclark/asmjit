@@ -152,9 +152,13 @@
 #endif
 
 #if defined(__APPLE__)
+#if defined(_LIBCPP_HAS_MUSL_LIBC)
+# define ASMJIT_OS_MAC          (1)
+#else
 # include <TargetConditionals.h>
 # define ASMJIT_OS_MAC          (TARGET_OS_MAC)
 # define ASMJIT_OS_IOS          (TARGET_OS_IPHONE)
+#endif
 #else
 # define ASMJIT_OS_MAC          (0)
 # define ASMJIT_OS_IOS          (0)
