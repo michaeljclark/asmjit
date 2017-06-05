@@ -628,6 +628,8 @@ static ASMJIT_INLINE uint32_t cpuDetectHWThreadsCount() noexcept {
   SYSTEM_INFO info;
   ::GetSystemInfo(&info);
   return info.dwNumberOfProcessors;
+#elif defined(_LIBCPP_HAS_MUSL_LIBC)
+  return 1;
 #elif ASMJIT_OS_POSIX && defined(_SC_NPROCESSORS_ONLN)
   long res = ::sysconf(_SC_NPROCESSORS_ONLN);
   if (res <= 0) return 1;
